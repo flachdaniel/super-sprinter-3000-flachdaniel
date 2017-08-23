@@ -3,12 +3,12 @@
 
 <head>
     <meta charset="utf-8">
-    <title>{% if row %}Super Sprinter 3000 - Add new Story{%else%}Super Sprinter 3000 - Edit Story{%endif%}</title>
+    <title>{% if row %}Super Sprinter 3000 - Edit Story{%else%}Super Sprinter 3000 - Add new Story{%endif%}</title>
 </head>
 
 <body>
     <form action={% if row %}/save_edited_story/{{row[0]}}{% else %}/save_story{% endif %} method="POST">
-        <h1> User Story manager - Add a new Story</h1>
+        <h1>{% if row %}Super Sprinter 3000 - Edit Story{%else%}Super Sprinter 3000 - Add new Story{%endif%}</h1>
         <label for="story titles"></label><br>
         <textarea name="storytitles">{% if row %}{{row[1]}}{%endif%}</textarea><br>
         <label for="user story">User Story</label><br>
@@ -16,9 +16,11 @@
         <label for="acceptance">Acceptance criteria</label><br>
         <textarea name="acceptance">{% if row %}{{row[3]}}{%endif%}</textarea><br>
         <label for="Business Value">Business Value</label><br>
-        <input name="business" type="number" value= {% if row %}{{row[4]}}{%else%}"1000"{%endif%} min="100" max="1500" step="100" /><br>
+        <input name="business" type="number" value={% if row %}{{row[4]}}{%else%} "1000"{%endif%} min="100" max="1500" step="100"
+        /><br>
         <label for="Estimation (h)">Estimation (h)</label><br>
-        <input name="estimation" type="number" value= {% if row %}{{row[5]}}{%else%}"2.5"{%endif%} min="0.5" max="40" step="0.5" /><br>
+        <input name="estimation" type="number" value={% if row %}{{row[5]}}{%else%} "2.5"{%endif%} min="0.5" max="40" step="0.5"
+        /><br>
         <p>Status</p>
         <select name="status">
                 {%if row%}<option selected="selected" value={{row[6]}}>{{row[6]}}</option>{%endif%}
