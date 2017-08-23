@@ -21,10 +21,10 @@ def read_csv():
     return stories
 
 
-def append_csv(row):
+def append_csv(story):
     with open("stories.csv", "a") as csvfile:
         writer = csv.writer(csvfile)
-        writer.writerow(row)
+        writer.writerow(story)
 
 
 def write_csv(stories):
@@ -34,9 +34,14 @@ def write_csv(stories):
             writer.writerow(story)
 
 
-@app.route('/story')
-def route_story():
-    return render_template('story.html')
+def edit_csv(stories, new_story):
+    with open("stories.csv", "w") as csvfile:
+        writer = csv.writer(csvfile)
+        for story in stories:
+            if story[0] == new_story[0]:
+                writer.writerow(new_story)
+                continue
+            writer.writerow(story)
 
 
 @app.route('/')
@@ -48,7 +53,7 @@ def route_index():
 @app.route('/story')
 def route_new_story():
     stories = read_csv()
-    return render_template('story.html')
+    return render_template('story.html', action="/save_story")
 
 
 @app.route('/save_story', methods=["POST"])
@@ -56,8 +61,8 @@ def route_save_story():
     list_label = ["storytitles", "userstory", "acceptance", "business", "estimation", "status"]
     story = []
     story.insert(0, generate_id())
-    for i in list_label:
-        story.append(request.form[i])
+    for input_name in list_label:
+        story.append(request.form[input_name])
     append_csv(story)
     return redirect("/")
 
@@ -68,6 +73,18 @@ def route_edit_story(post_id):
     for row in stories:
         if row[0] == post_id:
             return render_template("story.html", row=row)
+
+
+@app.route("/save_edited_story/<post_id>", methods=["POST"])
+def route_save_edited_story(post_id):
+    list_label = ["storytitles", "userstory", "acceptance", "business", "estimation", "status"]
+    edited_story = []
+    edited_story.insert(0, post_id)
+    for input_name in list_label:
+        edited_story.append(request.form[input_name])
+    stories = read_csv()
+    edit_csv(stories, edited_story)
+    return redirect("/")
 
 
 @app.route('/delete/<post_id>')
