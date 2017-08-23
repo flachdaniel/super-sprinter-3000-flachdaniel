@@ -14,6 +14,7 @@
     <br>
     <table border="1">
         <tr>
+            <th> ID </th>
             <th>Story Title</th>
             <th>User Story</th>
             <th>Acceptance criteria</th>
@@ -28,8 +29,8 @@
             {% for item in row %}
             <td>{{item}}</td>
             {%endfor%}
-            <td><a href=/edit/{{i}}>&#x270F;</a></td>
-            <td><a href=/delete/{{i}}>&#x2717;</a></td>
+            <td><a href=/story/{{row[0]}}>&#x270F;</a></td>
+            <td><a href=/delete/{{row[0]}}>&#x2717;</a></td>
             <br>
         </tr>
         {%endfor%}
